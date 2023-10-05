@@ -57,6 +57,20 @@ app.get("/pokemon/:index", (req,res) => {
         res.send(pokemon[req.params.index])
 })
 
+app.get("/pokemon-pretty/", (req,res) => { 
+    const response = pokemon.reduce((total,elem,index) => {
+        return total + `<a href="/pokemon-pretty/${index}" >${elem.name}</a>\n`
+    },"")
+    res.send(response)
+})
+
+app.get("/pokemon-pretty/:indexOfArray", (req,res) => { 
+    res.send(`<h1>${pokemon[req.params.indexOfArray].name}</h1><br />`+
+             `<img src="${pokemon[req.params.indexOfArray].img}" `+
+             `alt="${pokemon[req.params.indexOfArray].name}"  /><br />`+
+             `<h3>Hit Points: ${pokemon[req.params.indexOfArray].stats.hp}</h3>`)
+})
+
 app.get("/:verb/:adj/:noun", (req,res)=>{
     res.send(`Congratulations on starting a new project called `+
              `${req.params.verb}-${req.params.adj}-${req.params.noun}!`)
