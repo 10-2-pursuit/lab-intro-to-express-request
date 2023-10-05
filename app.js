@@ -14,14 +14,23 @@ app.get("/bugs", (req, res) => {
 app.get("/bugs/:numberOfBugs", (req, res) => {
     const { numberOfBugs } = req.params;
     if(Number(numberOfBugs) >= 200){
-        res.send("Too many bugs!! Start over!")
+        res.send(`<a href="/bugs/">Too many bugs!! Start over!</a>`)
     }
-    res.send(`${numberOfBugs} little bugs in the code`);
+    res.send(`${numberOfBugs} little bugs in the code\n <a href="/bugs/${String(Number(numberOfBugs)+2)}">Pull one down\, patch it around\n</a>`);
 });
 
 /** pokemon */
 app.get("/pokemon", (req, res) => {
     res.send(pokemon);
+});
+
+app.get("/pokemon/search", (req, res) => {
+    const name = req.query.name;
+
+    let poke = pokemon.filter((singlePokemon) => {return singlePokemon["name"].toLowerCase() == name.toLowerCase()});
+
+    res.send(poke || []);
+    
 });
 
 app.get("/pokemon/:indexOfArray", (req, res) => {
@@ -30,27 +39,6 @@ app.get("/pokemon/:indexOfArray", (req, res) => {
         res.send(`Sorry, no pokemon found at ${indexOfArray}`);
     }
     res.send(pokemon[indexOfArray]);
-});
-
-app.get("/pokemon/search/:property", (req, res) => {
-    const { name, img, type, stats, damages, misc } = req.query;
-    const { property } = req.params;
-
-    function nameFinder(pokeName){
-        let poke = pokemon.find(singlePokemon => singlePokemon.name == pokeName);
-        console.log(poke)
-        if(poke == undefined){
-            return "sends the Pokemon when the name exactly matches";
-        }
-        return poke;
-    }
-
-    if(property === "name"){
-        res.send(nameFinder(name));
-    }
-    else{
-        res.send()
-    }
 });
 
 /** new project name generator */
