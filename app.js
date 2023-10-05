@@ -41,8 +41,15 @@ app.get("/pokemon", (req, res) => {
     res.send(pokemon)
 })
 
+app.get("/pokemon/search", (req,res) => {
+    const poke = pokemon.find(ele => ele.name.toLowerCase() === req.query.name.toLowerCase())
+    if(poke === undefined)
+        res.send([])
+    else
+        res.send([poke])
+})
+
 app.get("/pokemon/:index", (req,res) => {
-    //console.log(req.params.index, pokemon.length, pokemon[123])
     if( pokemon[req.params.index] === undefined ||
         pokemon[req.params.index] === null )
         res.send(`Sorry, no pokemon found at ${req.params.index}`)
