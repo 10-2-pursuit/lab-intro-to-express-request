@@ -10,7 +10,14 @@ app.get("/pokemon", (req, res) => {
     res.json(pokemonData);
 });
 
-
+app.get("/pokemon/:indexOfArray", (req, res)=> { const indexOfArray = req.params.indexOfArray;
+    const pokemon = pokemonData[indexOfArray];
+    if(!pokemon) {
+        res.status(404).send('Sorry no pokemon found at /pokemon/${indexOfArray}');
+    } else {
+        res.json(pokemon);
+    }
+})
 
 app.get("/bugs", (req,res) => {
     const bugsLeft = 99;
