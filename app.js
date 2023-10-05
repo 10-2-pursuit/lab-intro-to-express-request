@@ -3,7 +3,20 @@ const app = express();
 const pokemon = require("./models/pokemon.json");
 
 app.get("/", (request, response) => {
-    response.send("Hello World");
+    response.send("Welcome 99 Pokemon");
+});
+
+/** 99 bugs */
+app.get("/bugs", (req, res) => {
+    res.send("99 little bugs in the code");
+});
+
+app.get("/bugs/:numberOfBugs", (req, res) => {
+    const { numberOfBugs } = req.params;
+    if(Number(numberOfBugs) >= 200){
+        res.send("Too many bugs!! Start over!")
+    }
+    res.send(`${numberOfBugs} little bugs in the code`);
 });
 
 /** pokemon */
@@ -13,6 +26,9 @@ app.get("/pokemon", (req, res) => {
 
 app.get("/pokemon/:indexOfArray", (req, res) => {
     const { indexOfArray } = req.params;
+    if(Number(indexOfArray) >= pokemon.length || Number(indexOfArray) < 0){
+        res.send(`Sorry, no pokemon found at ${indexOfArray}`);
+    }
     res.send(pokemon[indexOfArray]);
 });
 
@@ -20,24 +36,17 @@ app.get("/pokemon/search/:property", (req, res) => {
     const { name, img, type, stats, damages, misc } = req.query;
     const { property } = req.params;
 
+    function nameFinder(pokeName){
+        let poke = pokemon.find(singlePokemon => singlePokemon.name == pokeName);
+        console.log(poke)
+        if(poke == undefined){
+            return "sends the Pokemon when the name exactly matches";
+        }
+        return poke;
+    }
+
     if(property === "name"){
-        res.send(pokemon.find(singlePokemon => singlePokemon.name == name));
-    }
-    else if(property === "img"){
-        res.send()
-
-    }
-    else if(property === "stats"){
-        res.send()
-
-    }
-    else if(property === "damages"){
-        res.send()
-
-    }
-    else if(property === "misc"){
-        res.send()
-
+        res.send(nameFinder(name));
     }
     else{
         res.send()
