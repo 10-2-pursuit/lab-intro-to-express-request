@@ -17,15 +17,23 @@ app.get("/", (req, res) => {
 
 app.get("/bugs", (req, res) => {
     const numberOfBugs = 99
-    res.send(`${numberOfBugs} little bugs in the code`)
-    <a href="/bugs/:numberOfBugs+2">pull one down, patch it around</a>
-})
+    res.send(` <h1> ${numberOfBugs} little bugs in the code </h1>
+    <a href="/bugs/${numberOfBugs+2}">pull one down, patch it around </a>`);
+});
 
 // Show Route 
 
 app.get("/bugs/:index", (req, res) => {
-    const 
-})
+    const {numberOfBugs} = req.params;
+
+    if(numberOfBugs <= 200){
+        res.send(` <h1> ${numberOfBugs} little bugs in the code </h1>
+        <a href="/bugs/${numberOfBugs+2}">pull one down, patch it around </a>`);
+    } else {
+        res.send(` <h1> Too many bugs! </h1>
+        <a href="/bugs">Start Over</a>`);
+    }
+});
 
 // Multiple Parameters
 app.get("bugs/:verb/:adjective/:noun", (req, res) => {
@@ -46,4 +54,4 @@ app.get("bugs/:verb/:adjective/:noun", (req, res) => {
 
 // })
 
-module.export app
+module.exports = app;
