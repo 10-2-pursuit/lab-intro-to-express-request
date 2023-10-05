@@ -19,12 +19,27 @@ app.get("/pokemon/:indexOfArray", (req, res)=> { const indexOfArray = req.params
     }
 })
 
-app.get("/bugs", (req,res) => {
+app.get("/pokemon/search", (req, res) => {
+    const name = req.query.name;
+    const foundPokemon = pokemonData.find(pokemon => pokemon.name.toLowerCase() === name.toLowerCase());
+    if(!founfPokemon){
+        res.status(404).send(`Sorry, no pokemon found with name '${name}'`);
+    }else{
+        res.json(foundPokemon);
+    }
+});
+
+
+
+app.get("/bugs", (req, res) => {
     const bugsLeft = 99;
     const linkText = "pull one down, patch it around"
   res.send(`<p>${bugsLeft} little bugs in the code</p>
   <a href='/bugs/${bugsLeft + 2}'>${linkText}</a>`);
 });
+
+
+
 
 const numberOfBugs = parseInt(req.params.numberOfBugs)
 ;
