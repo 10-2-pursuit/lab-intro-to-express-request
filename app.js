@@ -41,6 +41,15 @@ app.get("/pokemon", (req, res) => {
     res.send(pokemon)
 })
 
+app.get("/pokemon/:index", (req,res) => {
+    //console.log(req.params.index, pokemon.length, pokemon[123])
+    if( pokemon[req.params.index] === undefined ||
+        pokemon[req.params.index] === null )
+        res.send(`Sorry, no pokemon found at ${req.params.index}`)
+    else
+        res.send(pokemon[req.params.index])
+})
+
 app.get("/:verb/:adj/:noun", (req,res)=>{
     res.send(`Congratulations on starting a new project called `+
              `${req.params.verb}-${req.params.adj}-${req.params.noun}!`)
