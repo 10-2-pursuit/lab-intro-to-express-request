@@ -45,3 +45,5 @@ app.get("bugs/:verb/:adjective/:noun", (req, res) => {
 // app.get("/verb", (req, res) => {
 
 // })
+
+module.export app
