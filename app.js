@@ -6,6 +6,12 @@ dotenv.config();
 
 const pokemonData = require("./pokemon.json");
 
+app.get("/pokemon", (req, res) => {
+    res.json(pokemonData);
+});
+
+
+
 app.get("/bugs", (req,res) => {
     const bugsLeft = 99;
     const linkText = "pull one down, patch it around"
