@@ -25,7 +25,18 @@ app.get('/bugs/:numberOfBugs', (req, res) => {
 
 app.get('/pokemon', (req, res) => {
     const pokemonList = pokemon.map((p, index)  => `<li><a href="/pokemon/${index}">${p.name}</a></li>`).join("");
-    res.send(`<ul>${pokemonList}</ul>`);
+    res.send(`
+        <style>
+        body {
+            font-family: sans-serif;
+        }
+        li,h1 {
+            color: blue;
+        }
+    </style>
+    <h1>Pyritmon</h1>
+    <ul>${pokemonList}</ul>
+    `);
 });
 
 app.get('/pokemon/search', (req, res) => {
@@ -44,9 +55,18 @@ app.get('/pokemon/:indexOfArray', (req, res) => {
         res.send("The index provided is not a valid number.");
         return;
     }
+
     if (pokemon[index]) {
         const p = pokemon[index];
         res.send(`
+        <style>
+        body {
+            font-family: sans-serif;
+        }
+        h1 {
+            color: red;
+        }
+    </style>
         <h1>${p.name}</h1>
         <img src="${p.img}" alt="${p.name}">
         <p>Type: ${p.type.join(', ')}</p>
