@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
-
 const dotenv = require('dotenv');
 
 dotenv.config();
+
+const pokemonData = require("./pokemon.json");
 
 app.get("/bugs", (req,res) => {
     const bugsLeft = 99;
