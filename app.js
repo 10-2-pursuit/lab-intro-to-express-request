@@ -1,54 +1,53 @@
 const express = require("express");
 const app = express();
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 
 dotenv.config();
 
-const pokemonData = require("./pokemon.json");
+const pokemonData = require("./models/pokemon.json");
+console.log(pokemon[0]);
 
 app.get("/pokemon", (req, res) => {
-    res.json(pokemonData);
+  res.json(pokemonData);
 });
 
-app.get("/pokemon/:indexOfArray", (req, res)=> { const indexOfArray = req.params.indexOfArray;
-    const pokemon = pokemonData[indexOfArray];
-    if(!pokemon) {
-        res.status(404).send('Sorry no pokemon found at /pokemon/${indexOfArray}');
+app.get("/pokemon/:indexOfArray", (req, res) => {
+  const indexOfArray = req.params.indexOfArray;
+  if (isNaN(indexOfArray)|| indexOfArray <0 || indexOfArray >= pokemonData.length) {
+      res.status(404).send(`Sorry no pokemon found at /pokemon/${indexOfArray}`);
     } else {
-        res.json(pokemon);
-    }
-})
+      const pokemon = pokemonData[indexOfArray];
+    res.json(pokemon);
+  }
+});
 
 app.get("/pokemon/search", (req, res) => {
-    const name = req.query.name;
-    const foundPokemon = pokemonData.find(pokemon => pokemon.name.toLowerCase() === name.toLowerCase());
-    if(!founfPokemon){
-        res.status(404).send(`Sorry, no pokemon found with name '${name}'`);
-    }else{
-        res.json(foundPokemon);
-    }
+  const name = req.query.name;
+  const foundPokemon = pokemonData.find(
+    (pokemon) => pokemon.name.toLowerCase() === name.toLowerCase()
+  );
+  if (!foundPokemon) {
+    res.status(404).send(`Sorry, no pokemon found with name '${name}'`);
+  } else {
+    res.json(foundPokemon);
+  }
 });
 
-
-
 app.get("/bugs", (req, res) => {
-    const bugsLeft = 99;
-    const linkText = "pull one down, patch it around"
+  const bugsLeft = 99;
+  const linkText = "pull one down, patch it around";
   res.send(`<p>${bugsLeft} little bugs in the code</p>
   <a href='/bugs/${bugsLeft + 2}'>${linkText}</a>`);
 });
 
+app.get("/bugs/:numberOfBugs", (req, res) => {
+  const numberOfBugs = parseInt(req.params.numberOfBugs);
+  const linkText =
+    numberOfBugs <= 200 ? "pull one down, patch it around" : "start over";
 
-
-
-const numberOfBugs = parseInt(req.params.numberOfBugs)
-;
-const linkText = numberOfBugs <= 200 ? "pull one down, patch it around" : "start over";
-
-res.send(`<p>${numberOfBugs} little bugs in the code</p>
+  res.send(`<p>${numberOfBugs} little bugs in the code</p>
 <a href="/bugs/${numberOfBugs + 2}">${linkText}</a>
 `);
-
-
+});
 
 module.exports = app;
