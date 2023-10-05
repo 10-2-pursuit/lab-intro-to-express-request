@@ -24,7 +24,8 @@ app.get('/bugs/:numberOfBugs', (req, res) => {
 });
 
 app.get('/pokemon', (req, res) => {
-    res.send(pokemon);
+    const pokemonList = pokemon.map((p, index)  => `<li><a href="/pokemon/${index}">${p.name}</a></li>`).join("");
+    res.send(`<ul>${pokemonList}</ul>`);
 });
 
 app.get('/pokemon/search', (req, res) => {
@@ -39,8 +40,18 @@ app.get('/pokemon/search', (req, res) => {
 
 app.get('/pokemon/:indexOfArray', (req, res) => {
     const index = parseInt(req.params.indexOfArray);
+    if (isNaN(index)) {
+        res.send("The index provided is not a valid number.");
+        return;
+    }
     if (pokemon[index]) {
-        res.json(pokemon[index]);
+        const p = pokemon[index];
+        res.send(`
+        <h1>${p.name}</h1>
+        <img src="${p.img}" alt="${p.name}">
+        <p>Type: ${p.type.join(', ')}</p>
+        <p>Hp: ${p.stats.hp}</p>
+        `);
     } else {
         res.send(`Sorry, no Pokemon found at /pokemon/${index}`);
     }
