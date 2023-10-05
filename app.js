@@ -8,8 +8,20 @@ app.get('/:verb/:adjective/:noun', (req, res) => {
 });
 
 app.get('/bugs', (req, res) => {
-    const 
-    res.send('99 little bugs');
+    res.send('99 little bugs in the code <a href="/bugs/101"> pull one down, patch it around</a>');
+});
+
+app.get('/bugs/:numberOfBugs', (req, res) => {
+    const numberOfBugs = parseInt(req.params.numberOfBugs);
+    if (numberOfBugs > 200) {
+    res.send(`{$numberOfBugs} little bugs in the code <a href="/bugs">Start Over</a>`);
+} else {
+    res.send(`${numberOfBugs} little bug in the code <a href="/bugs/${numberOfBugs +2}">pull one down, patch it around</a>`);
+}
+});
+
+app.get('/pokemon', (req, res) => {
+    res.send(pokemon);
 });
 
 module.exports = app;
