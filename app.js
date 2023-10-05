@@ -12,6 +12,13 @@ app.get("/bugs", (req,res) => {
   <a href='/bugs/${bugsLeft + 2}'>${linkText}</a>`);
 });
 
+const numberOfBugs = parseInt(req.params.numberOfBugs)
+;
+const linkText = numberOfBugs <= 200 ? "pull one down, patch it around" : "start over";
+
+res.send(`<p>${numberOfBugs} little bugs in the code</p>
+<a href="/bugs/${numberOfBugs + 2}">${linkText}</a>
+`);
 
 
 
