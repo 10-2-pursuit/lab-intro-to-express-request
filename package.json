@@ -5,7 +5,8 @@
   },
   "scripts": {
     "start": "node server.js",
-    "test": "jest"
+    "test": "jest",
+    "demon": "nodemon server.js" 
   },
   "name": "99-pokemon-express",
   "version": "1.0.0",
