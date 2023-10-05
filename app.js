@@ -16,22 +16,22 @@ app.get("/", (req, res) => {
 // Index Route 
 
 app.get("/bugs", (req, res) => {
-    const numberOfBugs = 99
+    const numberOfBugs = 99;
     res.send(` <h1> ${numberOfBugs} little bugs in the code </h1>
-    <a href="/bugs/${numberOfBugs+2}">pull one down, patch it around </a>`);
+    <a href="/bugs/${Number(numberOfBugs) + 2}">pull one down, patch it around </a>`);
 });
 
 // Show Route 
 
-app.get("/bugs/:index", (req, res) => {
+app.get("/bugs/:numberOfBugs", (req, res) => {
     const {numberOfBugs} = req.params;
 
     if(numberOfBugs <= 200){
         res.send(` <h1> ${numberOfBugs} little bugs in the code </h1>
-        <a href="/bugs/${numberOfBugs+2}">pull one down, patch it around </a>`);
+        <a href="/bugs/${Number(numberOfBugs) + 2}">pull one down, patch it around </a>`);
     } else {
-        res.send(` <h1> Too many bugs! </h1>
-        <a href="/bugs">Start Over</a>`);
+        res.send(`<h1> Too many bugs! </h1>
+        <a href="/bugs/">Start Over</a>`);
     }
 });
 
