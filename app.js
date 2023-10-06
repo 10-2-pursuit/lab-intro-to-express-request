@@ -41,7 +41,7 @@ app.get('/pokemon', (req, res) => {
       res.status(404).send(`Sorry, no Pokemon found at /pokemon/${indexOfArray}`);
     }
   });
-  
+  /*
   // Route to search for a Pokemon by name
   app.get('/pokemon/search/:name', (req, res) => {
     const { name } = req.query;
@@ -53,7 +53,7 @@ app.get('/pokemon', (req, res) => {
       res.status(404).send(`Sorry, no Pokemon found with the name "${name}"`);
     }
   });
-  
+  */
 
   const { generatePokemonListHTML, generatePokemonDetailsHTML } = require('./htmlResponse');
 
@@ -75,8 +75,37 @@ app.get('/pokemon', (req, res) => {
       res.status(404).send(`Sorry, no Pokemon found at /pokemon-pretty/${indexOfArray}`);
     }
   });
+
+  // Route for searching Pokemon by various criteria
+  app.get('/pokemon/search', (req, res) => {
+    const { name, type, classification } = req.query;
+  
+    // Create a function to check if a Pokemon matches the search criteria
+    const isMatch = (pokemon) => {
+      const matchesName = !name || pokemon.name.toLowerCase().includes(name.toLowerCase());
+      const matchesType = !type || pokemon.type.includes(type);
+      const matchesClassification = !classification || pokemon.misc.classification.toLowerCase().includes(classification.toLowerCase());
+  
+      return matchesName && matchesType && matchesClassification;
+    };
+  
+    const matchingPokemon = pokemonData.filter(isMatch);
+  
+    if (matchingPokemon.length === 0) {
+      if (name) {
+        return res.status(404).send(`No Pokemon with the name "${name}" was found.`);
+      } else if (type) {
+        return res.status(404).send(`No Pokemon with the type "${type}" was found.`);
+      } else if (classification) {
+        return res.status(404).send(`No Pokemon with the classification "${classification}" was found.`);
+      }
+    }
+  
+    res.json(matchingPokemon);
+  });
   
   
+  /*
 // Route to search for Pokemon by type
 app.get('/pokemon/type/:type', (req, res) => {
   const searchType = req.params.type.toLowerCase();
@@ -109,6 +138,6 @@ app.get('/pokemon/search', (req, res) => {
 
   res.json(filteredPokemon);
 });
-
+*/
 
 module.exports = app; 
