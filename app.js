@@ -1,11 +1,9 @@
 const express = require("express");
 const app = express();
-// const dotenv = require("dotenv");
 
-// dotenv.config();
 
 const pokemonData = require("./models/pokemon.json");
-// console.log(pokemon[0]);
+
 
 app.get("/pokemon", (req, res) => {
   res.json(pokemonData);
@@ -45,6 +43,19 @@ app.get("/pokemon/:indexOfArray", (req, res) => {
 });
 
 
+
+app.get("/bugs/:numberOfBugs", (req, res) => {
+  const numberOfBugs = parseInt(req.params.numberOfBugs);
+  
+  const linkText =
+  numberOfBugs <= 200 ? "pull one down, patch it around" : "start over";
+  
+  res.send(`<p>${numberOfBugs} little bugs in the code</p>
+  <a href="/bugs/${numberOfBugs + 2}">${linkText}</a>
+  `);
+});
+
+
 app.get("/bugs", (req, res) => {
   const bugsLeft = 99;
   const linkText = "pull one down, patch it around";
@@ -52,14 +63,5 @@ app.get("/bugs", (req, res) => {
   <a href='/bugs/${bugsLeft + 2}'>${linkText}</a>`);
 });
 
-app.get("/bugs/:numberOfBugs", (req, res) => {
-  const numberOfBugs = parseInt(req.params.numberOfBugs);
-  const linkText =
-    numberOfBugs <= 200 ? "pull one down, patch it around" : "start over";
-
-  res.send(`<p>${numberOfBugs} little bugs in the code</p>
-<a href="/bugs/${numberOfBugs + 2}">${linkText}</a>
-`);
-});
 
 module.exports = app;
