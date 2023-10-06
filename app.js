@@ -33,7 +33,6 @@ res.json({name:foundPokemon.name,
 app.get("/pokemon/:indexOfArray", (req, res) => {
   const indexOfArray = parseInt(req.params.indexOfArray);
 
-  //  console.log("indexOfArray:", indexOfArray);
   if (isNaN(indexOfArray)|| indexOfArray < 0 || indexOfArray >= pokemonData.length) {
       res.status(404).send(`Sorry, no pokemon found at /pokemon/${indexOfArray}`);
     } else {
@@ -42,6 +41,11 @@ app.get("/pokemon/:indexOfArray", (req, res) => {
   }
 });
 
+app.get("/:verb/:adjective/:noun", (req, res) => {
+  const { verb, adjective, noun } = req.params;
+  const projectName = `${verb}-${adjective}-${noun}`;
+  res.send(`Congratulations on starting a new project called ${projectName}!`);
+});
 
 
 app.get("/bugs/:numberOfBugs", (req, res) => {
