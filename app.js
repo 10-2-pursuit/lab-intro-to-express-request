@@ -11,21 +11,10 @@ app.get("/pokemon", (req, res) => {
   res.json(pokemonData);
 });
 
-app.get("/pokemon/:indexOfArray", (req, res) => {
-  const indexOfArray = parseInt(req.params.indexOfArray);
-
-  //  console.log("indexOfArray:", indexOfArray);
-  if (isNaN(indexOfArray)|| indexOfArray < 0 || indexOfArray >= pokemonData.length) {
-      res.status(404).send(`Sorry, no pokemon found at /pokemon/${indexOfArray}`);
-    } else {
-      const pokemon = pokemonData[indexOfArray];
-    res.json(pokemon);
-  }
-});
 
 app.get("/pokemon/search", (req, res) => {
   const nameToSearch = req.query.name;
-  // console.log("nameToSearch:", nameToSearch);
+   console.log("nameToSearch:", nameToSearch);
   const foundPokemon = pokemonData.find(
     (pokemon) => pokemon.name.toLowerCase() === nameToSearch.toLowerCase()
   );
@@ -40,6 +29,18 @@ res.json({name:foundPokemon.name,
         damages: foundPokemon.damages,
         misc: foundPokemon.misc,
       });
+  }
+});
+
+app.get("/pokemon/:indexOfArray", (req, res) => {
+  const indexOfArray = parseInt(req.params.indexOfArray);
+
+  //  console.log("indexOfArray:", indexOfArray);
+  if (isNaN(indexOfArray)|| indexOfArray < 0 || indexOfArray >= pokemonData.length) {
+      res.status(404).send(`Sorry, no pokemon found at /pokemon/${indexOfArray}`);
+    } else {
+      const pokemon = pokemonData[indexOfArray];
+    res.json(pokemon);
   }
 });
 
