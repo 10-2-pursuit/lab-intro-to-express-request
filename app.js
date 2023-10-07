@@ -61,15 +61,13 @@ app.get('/bugs/:numberOfBugs', (req, res) => {
 app.get('/pokemon', (req, res) => {
   res.json(pokemon);
 });
-
-// Route for /pokemon/search
 app.get('/pokemon/search', (req, res) => {
   const { name, type, classification } = req.query;
 
   // Create a function to check if a Pokemon matches the search criteria
   const isMatch = (pokemon) => {
     const matchesName = !name || pokemon.name.toLowerCase().includes(name.toLowerCase());
-    const matchesType = !type || pokemon.type.includes(type);
+    const matchesType = !type || checkTypeMatch(pokemon, type);
     const matchesClassification = !classification || pokemon.misc.classification.toLowerCase().includes(classification.toLowerCase());
 
     return matchesName && matchesType && matchesClassification;
@@ -86,6 +84,14 @@ app.get('/pokemon/search', (req, res) => {
     res.json(matchingPokemon);
   }
 });
+
+// Helper function to check type match
+function checkTypeMatch(pokemon, queryType) {
+  const queryTypes = queryType.split(',').map((t) => t.trim().toLowerCase());
+  return queryTypes.every((queryType) =>
+    pokemon.type.some((pokemonType) => pokemonType.toLowerCase().includes(queryType))
+  );
+}
 
 
 
