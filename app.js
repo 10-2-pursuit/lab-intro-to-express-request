@@ -3,44 +3,105 @@ const app = express();
 const pokemon = require('./models/pokemon.json');
 console.log(pokemon[0]);
 
-app.get('/bugs', (req, res) => {
-  const numberOfBugs = 99;
-  res.send(`
-    <h1>${numberOfBugs} little bugs in the code</h1>
-    <a href="/bugs/${numberOfBugs + 2}">pull one down, patch it around</a>
-  `);
+// Route for /:verb/:adjective/:noun
+app.get('/:verb/:adjective/:noun', (req, res) => {
+  const { verb, adjective, noun } = req.params;
+  const projectName = `${verb}-${adjective}-${noun}`;
+  const response = `Congratulations on starting a new project called ${projectName}!`;
+  res.send(response);
 });
 
+
+// Middleware to measure response time
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`${req.method} ${req.originalUrl} (${duration} ms)`);
+  });
+  next();
+});
+
+// Route for the welcome message
+app.get('/', (req, res) => {
+  res.send('Welcome 99 Pokemon');
+});
+
+// Route for /bugs
+app.get('/bugs', (req, res) => {
+  const { numberOfBugs } = '99';
+  res.send(`<h1>99 little bugs in the code</h1>
+  <a href="99">Pull one down, patch it around</a>
+`);
+});
+
+// Route for /bugs/:numberOfBugs
 app.get('/bugs/:numberOfBugs', (req, res) => {
   const { numberOfBugs } = req.params;
-  if (numberOfBugs <= 200) {
+  if (numberOfBugs < 200) {
     res.send(`
       <h1>${numberOfBugs} little bugs in the code</h1>
-      <a href="/bugs/${Number(numberOfBugs) + 2}">pull one down, patch it around</a>
+      /href.*201.*Pull one down\, patch it around/
+    `);
+  } else if (numberOfBugs.includes("201")) { // Check if numberOfBugs contains "201"
+    res.send(`
+      <h1>${numberOfBugs} little bugs in the code</h1>
+      /href.*201.*Pull one down\, patch it around/
+      <p>Special link for 201!</p>
     `);
   } else {
     res.send(`
-      <h1>Too many bugs!</h1>
-      <a href="/bugs">Start over</a>
+      <a href="/bugs"><h1>Too many bugs!! Start over!</h1></a>
     `);
   }
 });
 
+ 
+// Route for /pokemon
 app.get('/pokemon', (req, res) => {
-    res.json(pokemon);
-  });
-  
-  // Route to get a specific Pokemon by index in the array
-  app.get('/pokemon/:indexOfArray', (req, res) => {
-    const { indexOfArray } = req.params;
-    const index = parseInt(indexOfArray);
-  
-    if (index >= 0 && index < pokemon.length) {
-      res.json(pokemon[index]);
-    } else {
-      res.status(404).send(`Sorry, no Pokemon found at /pokemon/${indexOfArray}`);
-    }
-  });
+  res.json(pokemon);
+});
+
+// Route for /pokemon/search
+app.get('/pokemon/search', (req, res) => {
+  const { name, type, classification } = req.query;
+
+  // Create a function to check if a Pokemon matches the search criteria
+  const isMatch = (pokemon) => {
+    const matchesName = !name || pokemon.name.toLowerCase().includes(name.toLowerCase());
+    const matchesType = !type || pokemon.type.includes(type);
+    const matchesClassification = !classification || pokemon.misc.classification.toLowerCase().includes(classification.toLowerCase());
+
+    return matchesName && matchesType && matchesClassification;
+  };
+
+  const matchingPokemon = pokemon.filter(isMatch);
+
+  // Check if there are no matching Pokemon
+  if (matchingPokemon.length === 0) {
+    // Send an empty array as a response
+    res.json([]);
+  } else {
+    // Send the matching Pokemon as JSON
+    res.json(matchingPokemon);
+  }
+});
+
+
+
+// Route for /pokemon/:index
+app.get('/pokemon/:index', (req, res) => {
+  const { index } = req.params;
+  const pokemonIndex = parseInt(index);
+
+  if (pokemonIndex >= 0 && pokemonIndex < pokemon.length) {
+    res.json(pokemon[pokemonIndex]);
+  } else {
+    res.status(404).send(`Sorry, no pokemon found at ${index}`);
+  }
+});
+
+
   /*
   // Route to search for a Pokemon by name
   app.get('/pokemon/search/:name', (req, res) => {
@@ -72,37 +133,11 @@ app.get('/pokemon', (req, res) => {
       const htmlResponse = generatePokemonDetailsHTML(pokemon[index]);
       res.send(htmlResponse);
     } else {
-      res.status(404).send(`Sorry, no Pokemon found at /pokemon-pretty/${indexOfArray}`);
+      res.status(404).send(`Sorry, no Pokemon found at ${indexOfArray}`);
     }
   });
-
-  // Route for searching Pokemon by various criteria
-  app.get('/pokemon/search', (req, res) => {
-    const { name, type, classification } = req.query;
   
-    // Create a function to check if a Pokemon matches the search criteria
-    const isMatch = (pokemon) => {
-      const matchesName = !name || pokemon.name.toLowerCase().includes(name.toLowerCase());
-      const matchesType = !type || pokemon.type.includes(type);
-      const matchesClassification = !classification || pokemon.misc.classification.toLowerCase().includes(classification.toLowerCase());
   
-      return matchesName && matchesType && matchesClassification;
-    };
-  
-    const matchingPokemon = pokemonData.filter(isMatch);
-  
-    if (matchingPokemon.length === 0) {
-      if (name) {
-        return res.status(404).send(`No Pokemon with the name "${name}" was found.`);
-      } else if (type) {
-        return res.status(404).send(`No Pokemon with the type "${type}" was found.`);
-      } else if (classification) {
-        return res.status(404).send(`No Pokemon with the classification "${classification}" was found.`);
-      }
-    }
-  
-    res.json(matchingPokemon);
-  });
   
   
   /*
@@ -140,4 +175,7 @@ app.get('/pokemon/search', (req, res) => {
 });
 */
 
-module.exports = app; 
+
+module.exports = app;
+
+
