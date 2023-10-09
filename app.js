@@ -1,14 +1,7 @@
 const express = require("express");
-const pokemon = require("./models/pokemon.json");
+const pokemonData = require("./models/pokemon.json");
 // console.log(pokemon[0]);
-
-
 const app = express()
-
-
-
-
-
 
 // Simple Activity 
 
@@ -47,19 +40,19 @@ app.get("/bugs/:verb/:adjective/:noun", (req, res) => {
 
 // Routes
 app.get("/pokemon", (req, res) => {
-    res.send(pokemon);
+    res.send(pokemonData);
 });
 
 app.get("/pokemon/:indexOfArray", (req, res) => {
-    const pokemonData = pokemon[index];
-    const index = req.params.indexOfArray;
+    const indexOfArray = parseInt(req.params.indexOfArray);
    
-    if (pokemon){
-        res.send(`${pokemonData}`);
+    if (isNaN(indexOfArray) || indexOfArray < 0 || indexOfArray >= pokemonData.length){
+        res.status(404).send(`Sorry, that pokemon is not found at /pokemon[indexOfArray] `);
     }else {
-        res.send(`Sorry, no pokemon found at /pokemon${index}`);
+       const pokemon = pokemonData[indexOfArray];
+       res.json(pokemon);
     }
-})
+});
 
 
 
