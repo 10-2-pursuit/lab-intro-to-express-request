@@ -36,9 +36,9 @@ app.get("/bugs/:numberOfBugs", (req, res) => {
 });
 
 // Multiple Parameters
-app.get("bugs/:verb/:adjective/:noun", (req, res) => {
-    const {verb, adjective, noun} = req.params
-    res.send (`Congratulations on starting a new project called ${verb} ${adjective} ${noun}`)
+app.get("/bugs/:verb/:adjective/:noun", (req, res) => {
+    const {verb, adjective, noun} = req.params;
+    res.send (`<h1> Congratulations on starting a new project called ${verb} ${adjective} ${noun} </h1>`);
 })
 
 // Routes
