@@ -1,8 +1,12 @@
 const express = require("express");
-const pokemon = require("./pokemon.json");
+const pokemon = require("./models/pokemon.json");
+// console.log(pokemon[0]);
 
 
 const app = express()
+
+
+
 
 
 
@@ -42,7 +46,20 @@ app.get("/bugs/:verb/:adjective/:noun", (req, res) => {
 })
 
 // Routes
+app.get("/pokemon", (req, res) => {
+    res.send(pokemon);
+});
 
+app.get("/pokemon/:indexOfArray", (req, res) => {
+    const pokemonData = pokemon[index];
+    const index = req.params.indexOfArray;
+   
+    if (pokemon){
+        res.send(`${pokemonData}`);
+    }else {
+        res.send(`Sorry, no pokemon found at /pokemon${index}`);
+    }
+})
 
 
 
