@@ -1,5 +1,5 @@
-const express = require("express")
-// const bugs = require("/models/pokemon.json")
+const express = require("express");
+const pokemon = require("./pokemon.json");
 
 
 const app = express()
@@ -43,15 +43,13 @@ app.get("/bugs/:verb/:adjective/:noun", (req, res) => {
 
 // Routes
 
-// app.get("/bugs/:number", (req, res) => {
-//     const {}
-//     res.send(``)
-// });
 
-// Index Route 
 
-// app.get("/verb", (req, res) => {
 
-// })
+
+
+
+
+
 
 module.exports = app;
