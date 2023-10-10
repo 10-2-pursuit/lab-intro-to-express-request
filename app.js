@@ -58,7 +58,7 @@ app.get("/pokemon/:indexOfArray", (req, res) => {
 
 // Route for searching pokemon by name
 app.get("/pokemon/search", (req, res) => {
-    const searchTerm = req.query.name;
+    const searchTerm = req.query.q;
 
     if (!searchTerm) {
         res.send("Please provide a valid search term.");
