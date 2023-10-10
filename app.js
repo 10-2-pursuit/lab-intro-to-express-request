@@ -47,11 +47,17 @@ app.get("/pokemon/:indexOfArray", (req, res) => {
     const indexOfArray = parseInt(req.params.indexOfArray);
    
     if (isNaN(indexOfArray) || indexOfArray < 0 || indexOfArray >= pokemonData.length){
-        res.status(404).send(`Sorry, that pokemon is not found at /pokemon[indexOfArray] `);
+        res.status(404).send(`Sorry, that pokemon is not found at /pokemon/${indexOfArray} `);
     }else {
        const pokemon = pokemonData[indexOfArray];
        res.json(pokemon);
     }
+});
+
+app.get("/pokemon/search", (req, res) => {
+
+
+
 });
 
 
