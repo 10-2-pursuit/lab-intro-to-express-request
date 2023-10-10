@@ -38,6 +38,27 @@ app.get("/bugs/:verb/:adjective/:noun", (req, res) => {
     res.send (`<h1> Congratulations on starting a new project called ${verb} ${adjective} ${noun} </h1>`);
 })
 
+
+
+app.get("/pokemon/search", (req, res) => {
+    const searchTerm = req.query.name;
+    console.log("searchTerm:", searchTerm);
+    
+    const matchingPokemon = pokemonData.find((pokemon) => pokemon.name.toLowerCase() === searchTerm.toLowerCase());
+    
+    if (!matchingPokemon) {
+        res.status(404).send(`Sorry, there is no pokemon found with that name '${searchTerm}'`);
+    } else {
+        res.json({name: matchingPokemon.name,
+                img: matchingPokemon.img, 
+                type: matchingPokemon.type,
+                stats: matchingPokemon.stats,
+                damages: matchingPokemon.damages,
+                misc: matchingPokemon.misc
+                })
+    }
+    
+    });
 // Routes
 app.get("/pokemon", (req, res) => {
     res.send(pokemonData);
@@ -53,25 +74,6 @@ app.get("/pokemon/:indexOfArray", (req, res) => {
        res.json(pokemon);
     }
 });
-
-
-app.get("/pokemon/search", (req, res) => {
-const searchTerm = req.query.name;
-console.log("searchTerm:", searchTerm);
-
-const matchingPokemon = pokemonData.find((pokemon) => pokemon.name.toLowerCase() === searchTerm.toLowerCase());
-
-if (!matchingPokemon) {
-    res.status(404).send(`Sorry, there is no pokemon found with that name '${searchTerm}'`);
-} else {
-    res.json({name: matchingPokemon.name,
-            img: matchingPokemon.img, 
-            type: matchingPokemon.type,
-            })
-}
-
-});
-
 
 
 
