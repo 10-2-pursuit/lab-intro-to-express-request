@@ -55,17 +55,20 @@ app.get("/pokemon/:indexOfArray", (req, res) => {
 });
 
 
-app.get("/search", (req, res) => {
-const searchTerm = req.query.q;
-const searchResults = performSearch(searchTerm);
+app.get("/pokemon/search", (req, res) => {
+const searchTerm = req.query.name;
+console.log("searchTerm:", searchTerm);
 
-if (searchResults) 
-    {
-    res.json(searchResults);
-    } else {
-    res.status(404).json(`Sorry there is no results for that ${searchTerm}`);
-    }
+const matchingPokemon = pokemonData.find((pokemon) => pokemon.name.toLowerCase() === searchTerm.toLowerCase());
 
+if (!matchingPokemon) {
+    res.status(404).send(`Sorry, there is no pokemon found with that name '${searchTerm}'`);
+} else {
+    res.json({name: matchingPokemon.name,
+            img: matchingPokemon.img, 
+            type: matchingPokemon.type,
+            })
+}
 
 });
 
