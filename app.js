@@ -54,29 +54,22 @@ app.get("/pokemon/:indexOfArray", (req, res) => {
     }
 });
 
-// ... (existing code)
 
-// Route for searching pokemon by name
-app.get("/pokemon/search", (req, res) => {
-    const searchTerm = req.query.q;
+app.get("/search", (req, res) => {
+const searchTerm = req.query.q;
+const searchResults = performSearch(searchTerm);
 
-    if (!searchTerm) {
-        res.send("Please provide a valid search term.");
-        return;
-    }
-
-    const matchingPokemon = pokemonData.filter(pokemon => {
-        return pokemon.name.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-
-    if (matchingPokemon.length > 0) {
-        res.json(matchingPokemon);
+if (searchResults) 
+    {
+    res.json(searchResults);
     } else {
-        res.send(`No pokemon found matching the search term: ${searchTerm}`);
+    res.status(404).json(`Sorry there is no results for that ${searchTerm}`);
     }
+
+
 });
 
-// ... (existing code)
+
 
 
 
